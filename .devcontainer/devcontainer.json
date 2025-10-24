@@ -1,0 +1,62 @@
+{
+  "name": "nanochat Development Environment",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.debugpy",
+        "rust-lang.rust-analyzer",
+        "vadimcn.vscode-lldb",
+        "github.vscode-pull-request-github",
+        "eamodio.gitlens",
+        "ms-toolsai.jupyter",
+        "ms-azuretools.vscode-docker",
+        "tamasfe.even-better-toml"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/workspace/.venv/bin/python",
+        "python.terminal.activateEnvironment": true,
+        "python.formatting.provider": "none",
+        "python.linting.enabled": false,
+        "[python]": {
+          "editor.defaultFormatter": "ms-python.python",
+          "editor.formatOnSave": false,
+          "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+          }
+        },
+        "files.exclude": {
+          "**/__pycache__": true,
+          "**/*.pyc": true,
+          "rustbpe/target": true
+        },
+        "rust-analyzer.checkOnSave.command": "clippy"
+      }
+    }
+  },
+  "forwardPorts": [8000],
+  "portsAttributes": {
+    "8000": {
+      "label": "nanochat Web UI",
+      "onAutoForward": "notify"
+    }
+  },
+  "containerEnv": {
+    "OMP_NUM_THREADS": "1",
+    "NANOCHAT_BASE_DIR": "/workspace/.cache/nanochat"
+  },
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "remoteUser": "vscode",
+  "mounts": [
+    "source=${localWorkspaceFolder}/.cache,target=/workspace/.cache,type=bind,consistency=cached"
+  ]
+}
